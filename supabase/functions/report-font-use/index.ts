@@ -23,7 +23,7 @@ const ReportParams = [
 
 const router = createRouter({
   "/api/v1/status": () => new Response("I am here."), // Any HTTP request method
-  "/": () => new Response("Hello"), // Any HTTP request method
+  //"/": () => new Response("Hello"), // Any HTTP request method
 
   // "/api/v1/report-font-use": {
   //   POST: async (req: Request, ctx: Readonly<RouteHandlerContext>) => {
