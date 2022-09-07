@@ -99,7 +99,7 @@ const router = createRouter({
           { status: 500 }
         );
       }
-      const responseBody = response.body ? await response.text() : "";
+      const responseBody = response.body ? await response.clone().text() : ""; // without the clone, reading the text() means the body won't go out in the response we sent back
       console.log(
         `Response: ${response.status} ${response.statusText} ${responseBody}`
       );
