@@ -70,15 +70,17 @@ const router = createRouter({
             }
           );
 
+          const resultBody = result.body ? await result.text() : "";
+
           if (result.status === 201) {
             // Successfully inserted
-            response = new Response(result.body, {
+            response = new Response(resultBody, {
               status: result.status,
               statusText: result.statusText,
             });
           } else {
             response = new Response(
-              `The API was happy but the database rejected the insert. ${result.body}`,
+              `The API was happy but the database rejected the insert. ${resultBody}`,
               {
                 status: result.status,
                 statusText: result.statusText,
@@ -97,8 +99,9 @@ const router = createRouter({
           { status: 500 }
         );
       }
+      const responseBody = response.body ? await response.text() : "";
       console.log(
-        `Response: ${response.status} ${response.statusText} ${response.body}`
+        `Response: ${response.status} ${response.statusText} ${responseBody}`
       );
       return response;
     },
@@ -116,12 +119,19 @@ curl -i --location --request GET 'https://sil-font-analytics-zhdxhn4jn46g.deno.d
 
 Just the required
 
+curl -i --location --request POST 'http://localhost:8000/api/v1/report-font-use' \
+--header 'Content-Type: application/json' \
+-d '{"source":"test","document_id":"1","test_only":"true","font_name":"Bar","language_tag":"UND","event_type":"configure_project"}'
+
 curl -i --location --request POST 'https://font-analytics.languagetechnology.org/api/v1/report-font-use' \
 --header 'Content-Type: application/json' \
 -d '{"source":"test","document_id":"1","font_name":"Bar","language_tag":"UND","event_type":"configure_project"}'
 
-Missing source
+MISSING SOURCE
 
+curl -i --location --request POST 'http://localhost:8000/api/v1/report-font-use' \
+--header 'Content-Type: application/json' \
+-d '{"document_id":"huh","font_name":"Padauk","language_tag":"my-MY","event_type":"configure_project"}'
 
 curl -i --location --request POST 'https://sil-font-analytics.deno.dev/api/v1/report-font-use' \
 --header 'Content-Type: application/json' \
