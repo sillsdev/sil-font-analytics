@@ -21,6 +21,7 @@ const ReportParams = [
   { name: "event_time" },
   { name: "test_only" }, // boolean
   { name: "event_type", required: true },
+  { name: "event_details" },
 ];
 
 const router = createRouter({
