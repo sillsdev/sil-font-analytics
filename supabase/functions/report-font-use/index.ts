@@ -16,8 +16,10 @@ const ReportParams = [
   { name: "font_styles" },
   { name: "font_features" },
   { name: "language_tag", required: true },
-  { name: "ip_address" },
+  // this is pii, we need more thought first. It could come back as a parameter
+  // but then we should anonymize before storing in database { name: "ip_address" },
   { name: "event_time" },
+  { name: "test_only" }, // boolean
   { name: "event_type", required: true },
 ];
 
@@ -45,7 +47,7 @@ const router = createRouter({
         for (const key of Object.keys(incomingParams)) {
           if (!ReportParams.some((v) => v.name === key)) {
             response = new Response(
-              `The parameter ${key} is not recognized by this API.`,
+              `The parameter "${key}" is not recognized by this API.`,
               { status: 400 }
             );
           }
