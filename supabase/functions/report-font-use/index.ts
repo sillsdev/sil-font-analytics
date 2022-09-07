@@ -26,10 +26,9 @@ const router = createRouter({
   "/api/v1/status": () => new Response("I am here."), // Any HTTP request method
   "/api/v1/report-font-use": {
     POST: async (req: Request, ctx: Readonly<RouteHandlerContext>) => {
-      // const greeting = `Hello! ${ctx.params.name!}`;
-      // return new Response(greeting);
       try {
         const incomingParams = await req.json();
+        console.log(`report-font-use: ${JSON.stringify(incomingParams)}`);
 
         // Validate all required parameters are present
         for (const param of ReportParams) {
@@ -100,38 +99,33 @@ serve(router);
 
 /*
 Are you alive?
+curl -i --location --request GET 'https://font-analytics.languagetechnology.org'
 curl -i --location --request GET 'https://sil-font-analytics.deno.dev/'
 curl -i --location --request GET 'https://sil-font-analytics.deno.dev/api/v1/status'
+curl -i --location --request GET 'https://sil-font-analytics-zhdxhn4jn46g.deno.dev/'
 
 Just the required
 
-curl -i --location --request POST 'https://sil-font-analytics-7fzgnmp67qrg.deno.dev/' \
+curl -i --location --request POST 'https://font-analytics.languagetechnology.org/api/v1/report-font-use' \
 --header 'Content-Type: application/json' \
--d '{"source":"foo","document_id":"huh","font_name":"Padauk","language_tag":"my-MY","event_type":"configure_project"}'
-
-curl -i --location --request POST 'https://iznwztlpmhqdmcqsdhts.functions.supabase.co/report-font-use' \
---header 'Content-Type: application/json' \
--d '{"source":"foo","document_id":"huh","font_name":"Padauk","language_tag":"my-MY","event_type":"configure_project"}'
+-d '{"source":"test","document_id":"1","font_name":"Bar","language_tag":"UND","event_type":"configure_project"}'
 
 Missing source
 
-curl -i --location --request POST 'https://sil-font-analytics-7fzgnmp67qrg.deno.dev' \
---header 'Content-Type: application/json' \
--d '{"document_id":"huh","font_name":"Padauk","language_tag":"my-MY","event_type":"configure_project"}'
 
-curl -i --location --request POST 'https://iznwztlpmhqdmcqsdhts.functions.supabase.co/report-font-use' \
+curl -i --location --request POST 'https://sil-font-analytics.deno.dev/api/v1/report-font-use' \
 --header 'Content-Type: application/json' \
 -d '{"document_id":"huh","font_name":"Padauk","language_tag":"my-MY","event_type":"configure_project"}'
 
 Unrecognized field
 
-curl -i --location --request POST 'https://iznwztlpmhqdmcqsdhts.functions.supabase.co/report-font-use' \
+curl -i --location --request POST 'https://sil-font-analytics.deno.dev/api/v1/report-font-use' \
 --header 'Content-Type: application/json' \
 -d '{"color":"red", "source":"foo","document_id":"huh","font_name":"Padauk","language_tag":"my-MY","event_type":"configure_project"}'
 
 All fields
 
-curl -i --location --request POST 'https://iznwztlpmhqdmcqsdhts.functions.supabase.co/report-font-use' \
+curl -i --location --request POST 'https://sil-font-analytics.deno.dev/api/v1/report-font-use' \
 --header 'Content-Type: application/json' \
 -d '{"source":"foo","document_id":"huh","font_name":"Padauk","language_tag":"my-MY","event_type":"configure_project", "source_version":"2022-04-05", "font_version":"1.0","font_styles":"what is this", "font_features":"some features", "ip_address":null,"event_time":"2022-06-22T21:51:00+0000"}'
 
