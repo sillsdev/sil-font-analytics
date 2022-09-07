@@ -70,18 +70,17 @@ const router = createRouter({
 
           if (result.status === 201) {
             // Successfully inserted
-            response = new Response(
-              JSON.stringify({
-                status: result.status,
-                statusText: result.statusText,
-              })
-            );
+            response = new Response(result.body, {
+              status: result.status,
+              statusText: result.statusText,
+            });
           } else {
             response = new Response(
-              JSON.stringify({
+              `The API was happy but the database rejected the insert. ${result.body}`,
+              {
                 status: result.status,
-                statusText: `The API was happy but the database rejected the insert with status text: ${result.statusText}`,
-              })
+                statusText: result.statusText,
+              }
             );
           }
         }
@@ -92,10 +91,13 @@ const router = createRouter({
             error_name: error.name,
             error_message: error.message,
             stack: error.stack,
-          })
+          }),
+          { status: 500 }
         );
       }
-      console.log(`Response: ${response.status} ${response.statusText}`);
+      console.log(
+        `Response: ${response.status} ${response.statusText} ${response.body}`
+      );
       return response;
     },
   },
